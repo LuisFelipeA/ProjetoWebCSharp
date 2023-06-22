@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Data;
+using SalesWebMVC.Models;
+
 
 namespace SalesWebMVC
 {
@@ -32,21 +34,17 @@ namespace SalesWebMVC
                     {
                         mysqlOptions.MigrationsAssembly("SalesWebMVC");
                     }));
+
+            services.AddScoped<SeedingService>();
         }
 
-        /*
-
-            options.UseMySql(Configuration.GetConnectionString("SalesWebMVCContext"), builder =>
-                        builder.MigrationsAssembly("SalesWebMvc")));
-        */
-
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seedingService.Seed();
             }
             else
             {
