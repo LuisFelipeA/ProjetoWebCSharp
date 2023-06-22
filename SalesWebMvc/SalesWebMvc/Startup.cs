@@ -28,8 +28,18 @@ namespace SalesWebMVC
             services.AddControllersWithViews();
 
             services.AddDbContext<SalesWebMVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SalesWebMVCContext")));
+                    options.UseMySql(Configuration.GetConnectionString("SalesWebMVCContext"), mysqlOptions =>
+                    {
+                        mysqlOptions.MigrationsAssembly("SalesWebMVC");
+                    }));
         }
+
+        /*
+
+            options.UseMySql(Configuration.GetConnectionString("SalesWebMVCContext"), builder =>
+                        builder.MigrationsAssembly("SalesWebMvc")));
+        */
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
